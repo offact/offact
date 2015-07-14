@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+encoding//src/main/resources/config.properties=UTF-8
+encoding//src/main/resources/messages.properties=UTF-8
+encoding//src/main/webapp/WEB-INF/views/errors/404.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/usedbaron/main.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/usedbaron/map.jsp=UTF-8
+encoding/<project>=UTF-8
