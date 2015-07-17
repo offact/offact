@@ -58,9 +58,7 @@
 <body>
 <form  id="offactForm" name="offactForm"  role="form" action="<%= request.getContextPath() %>/usedbaron/main">
 <div data-role="page" id="page" data-fullscreen="true" class="map_style">
-  <div data-role="header"  data-position="fixed" >
-    <h1><a href="javascript:goBack()" data-icon="back">Back</a> Offact Map</h1>
-  </div>
+ 
   <div data-role="content" class="map_style">
       <div id="map_canvas" class="map_style"></div>
   </div>

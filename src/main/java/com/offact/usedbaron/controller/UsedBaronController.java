@@ -167,7 +167,7 @@ public class UsedBaronController {
 	
 				mv.addObject("userId", strUserId);
 
-				strMainUrl = "usedbaron/main";
+				strMainUrl = "usedbaron/map";
 				
 			} else {//app 상요자 정보가 없는경우
 	
