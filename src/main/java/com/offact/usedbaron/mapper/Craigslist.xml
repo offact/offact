@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Craigslist">
+
+<resultMap id="CraigslistVO" type="com.offact.usedbaron.vo.CraigslistVO" >
+  <result column="productId"              property="productId"  />
+  <result column="imgsrc"              property="imgsrc"  />
+  <result column="title"            property="title"  />
+  <result column="price"          property="price"  />
+</resultMap>
+
+<select id="insertProduct" resultMap="CraigslistVO" parameterType="com.offact.usedbaron.vo.CraigslistVO" >
+	insert into ubCraiglist (
+				 productId
+            	,title 
+            	,price
+            	,imgsrc
+            	,createUserId
+            	,createDateTime
+            	,deletedYn
+		)values(
+				 #{productId}
+	  			, #{title}
+	  			, #{price}
+	  			, #{imgsrc}
+	  			, 'system'
+	  			, now()
+	  			,'N'
+		)
+		ON DUPLICATE KEY UPDATE  title = #{title}
+            	                ,price = #{price}
+            	                ,imgsrc = #{imgsrc}
+            					,updateUserId = 'system'
+            					,updateDateTime = now()
+</select>
+
+</mapper>

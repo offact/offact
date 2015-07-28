@@ -218,5 +218,73 @@ public class UsedBaronController {
 		mv.setViewName("usedbaron/map");
 		return mv;
 	}
-	
+	/**
+	   * hybridLogin
+	   *
+	   * @param stockVO
+	   * @param request
+	   * @param response
+	   * @param model
+	   * @param locale
+	   * @return
+	   * @throws BizException
+	   */
+	  @RequestMapping(value = "/usedbaron/hybridlogin", method = RequestMethod.POST)
+	  public @ResponseBody
+	  String hybridLogin(String email, 
+			  			 String pwd, 
+	  		             HttpServletRequest request, 
+	  		             HttpServletResponse response) throws BizException
+	  {
+	  	//log Controller execute time start
+			String logid=logid();
+			long t1 = System.currentTimeMillis();
+			logger.info("["+logid+"] Controller start : email" + email);
+			
+			String loginResult="F";
+			String strPassword ="";
+			
+			logger.info(">>>> strEmail :"+email);
+			logger.info(">>>> strUserPw :"+pwd);
+			
+			
+			String strMainUrl = "";
+			
+			// # 2. 넘겨받은 아이디로 데이터베이스를 조회하여 사용자가 있는지를 체크한다.
+			UserVO userChkVo = new UserVO();
+			userChkVo.setEmail(email);
+			userChkVo.setInPassword(pwd);
+			UserVO userChk = userSvc.getUser(userChkVo);		
+
+			String strUserName = "";
+			
+			String ip = request.getRemoteAddr(); 
+			logger.info(">>>> RemoteAddr :"+ip);
+
+			if(userChk != null)
+			{
+				//패스워드 체크
+				if(!userChk.getPassword().equals(userChk.getInPassword())){
+					
+					logger.info(">>> 비밀번호 오류");
+					loginResult="F";
+					
+					//log Controller execute time end
+			      	long t2 = System.currentTimeMillis();
+			      	logger.info("["+logid+"] Controller end execute time:[" + (t2-t1)/1000.0 + "] seconds");
+			      	
+					return loginResult;
+					
+				}
+				
+				loginResult="S";
+				
+			}
+			//log Controller execute time end
+	     	long t2 = System.currentTimeMillis();
+	     	logger.info("["+logid+"] Controller end execute time:[" + (t2-t1)/1000.0 + "] seconds");
+
+	     	return loginResult;
+	  } 	
+	  
 }

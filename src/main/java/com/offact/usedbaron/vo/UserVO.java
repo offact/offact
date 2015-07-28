@@ -7,6 +7,7 @@ package com.offact.usedbaron.vo;
 public class UserVO extends AbstractVO {
 	private String userId;
 	private String userName;
+	private String email;
 	private String inPassword;
 	private String password;
 	
@@ -33,6 +34,12 @@ public class UserVO extends AbstractVO {
 	}
 	public void setInPassword(String inPassword) {
 		this.inPassword = inPassword;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

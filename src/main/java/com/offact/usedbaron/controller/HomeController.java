@@ -20,6 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -38,7 +43,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.offact.usedbaron.service.UserService;
+import com.offact.usedbaron.service.CraigslistService;
 import com.offact.usedbaron.vo.UserVO;
+import com.offact.usedbaron.vo.CraigslistVO;
 import com.offact.framework.constants.CodeConstant;
 import com.offact.framework.exception.BizException;
 import com.offact.framework.jsonrpc.JSONRpcService;
@@ -68,6 +75,9 @@ public class HomeController {
 	@Autowired
 	private UserService userSvc;
 	
+	@Autowired
+	private CraigslistService craigslistSvc;
+	
 	@Value("#{config['offact.host.url']}")
 	private String host_url;
 
@@ -95,6 +105,121 @@ public class HomeController {
 		  return str;
 
 	 }
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 * @throws BizException
+	 */
+	@RequestMapping(value = "/jsoupTest", method = RequestMethod.GET)
+	public ModelAndView jsoupTest(HttpServletRequest request,
+			                      HttpServletResponse response) throws BizException 
+	{
+		logger.info("jsoupTest");
+		ModelAndView mv = new ModelAndView();
+		try{
+			Document doc =Jsoup.connect("http://blog.acronym.co.kr").get();
+			Elements titles = doc.select(".title");
+			
+			for (Element e: titles){
+				logger.info("text:"+e.text());
+				logger.info("html:"+e.html());
+			}
+			
+			Elements links = doc.select("a[href]");
+			for (Element l: links){
+				logger.info("link:"+l.attr("abs:href"));
+			}
+			
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		mv.setViewName("errors/404");
+		return mv;
+	}
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 * @throws BizException
+	 */
+	@RequestMapping(value = "/craigslists", method = RequestMethod.GET)
+	public ModelAndView craigslist(HttpServletRequest request,
+			                      HttpServletResponse response) throws BizException 
+	{
+		logger.info("craigslist");
+		ModelAndView mv = new ModelAndView();
+		JSONArray craigslists = new JSONArray();
+		List craigslistsList = new ArrayList();//업로드 대상 데이타
+		
+		try{
+			Document doc =Jsoup.connect("http://seoul.craigslist.co.kr/search/ata").get();
+			Elements titles = doc.select(".row");
+			
+			for (Element e: titles){
+				
+				String productId="";
+				String imgsrc="";
+				String title="";
+				String price="";
+				
+				//logger.info("html:"+e.html());
+				//logger.info("a data-ids:"+e.childNode(1).attr("data-ids"));
+
+				logger.info("productid:"+e.attr("data-pid"));
+				productId=e.attr("data-pid");
+				
+				String imageIds[]=e.childNode(1).attr("data-ids").split(",");
+				String imageId=imageIds[0].substring(2);
+				logger.info("img src: http://images.craigslist.org/"+imageId+"_300x300.jpg");
+				imgsrc="http://images.craigslist.org/"+imageId+"_300x300.jpg";
+				
+				logger.info("title:"+e.text());
+				title=e.text();
+				
+				if(e.child(0).text().length()>1){
+					logger.info("price: ￦"+e.child(0).text().substring(1,e.child(0).text().length()));
+					price="￦"+e.child(0).text().substring(1,e.child(0).text().length());
+				}else{
+					logger.info("price: ￦ 0");	
+					price="￦ 0";
+				}
+				
+				JSONObject craigslist = new JSONObject();
+				craigslist.put("productId", productId);
+				craigslist.put("imgsrc", imgsrc);
+				craigslist.put("title", title);
+				craigslist.put("price", price);
+				
+				CraigslistVO craigslistVO = new CraigslistVO();
+				craigslistVO.setProductId(productId);
+				craigslistVO.setImgsrc(imgsrc);
+				craigslistVO.setTitle(title);
+				craigslistVO.setPrice(price);
+				
+				craigslists.add(craigslist);
+				craigslistsList.add(craigslistVO);
+				
+			}
+			
+			logger.info("craigslists:"+craigslists);
+			/*
+			Elements links = doc.select("a[href]");
+			Elements spans = doc.select("span[href]");
+			for (Element l: links){
+				logger.info("link:"+l.attr("data-ids"));
+			}
+			*/
+		     //DB처리
+		     int retVal = this.craigslistSvc.productUpload(craigslistsList);
+			
+			
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		mv.addObject("craigslists", craigslists);
+		mv.setViewName("common/JASONResult");
+		
+		return mv;
+	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 * @throws BizException

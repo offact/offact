@@ -1,0 +1,1 @@
+<%@ page contentType="application/json; charset=euc_kr"%>${craigslists}

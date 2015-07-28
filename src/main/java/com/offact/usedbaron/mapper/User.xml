@@ -15,7 +15,7 @@
 		     password,
 		     password(#{inPassword}) As inPassword
   	From ofUser
- 	Where userId = #{userId} And deletedYn='N'
+ 	Where email = #{email} And deletedYn='N'
 </select>
 
 </mapper>
