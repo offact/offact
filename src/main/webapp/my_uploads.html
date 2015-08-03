@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My Uploads</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.addys.co.kr:81/offact/css/my_uploads.css">
+	<script type="text/javascript" src="http://dev.addys.co.kr:81/offact/js/my_uploads.js"></script>
+	<script type="text/javascript" src="http://dev.addys.co.kr:81/offact/js/auth.js"></script>
+  </head>
+  <body>
+    <div id="login-container" class="pre-auth">
+      This application requires access to your YouTube account.
+      Please <span style="color:blue" id="login-link" >authorize</span> to continue.
+    </div>
+    <div id="video-container"></div>
+    <div class="button-container">
+      <button id="prev-button" class="paging-button" onclick="previousPage();">Previous Page</button>
+      <button id="next-button" class="paging-button" onclick="nextPage();">Next Page</button>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+  </body>
+</html>
