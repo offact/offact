@@ -120,6 +120,7 @@ public class UsedBaronController {
 		// # 2. 넘겨받은 아이디로 데이터베이스를 조회하여 사용자가 있는지를 체크한다.
 		UserVO userChkVo = new UserVO();
 		userChkVo.setUserId(strUserId);
+		userChkVo.setEmail(strUserId);
 		userChkVo.setInPassword(strUserPw);
 		UserVO userChk = userSvc.getUser(userChkVo);		
 
@@ -130,6 +131,9 @@ public class UsedBaronController {
 
 		if(userChk != null)
 		{
+			
+			logger.info(">>>> userChk.getPassword() :"+userChk.getPassword());
+			logger.info(">>>> userChk.getInPassword() :"+userChk.getInPassword());
 			//패스워드 체크
 			if(!userChk.getPassword().equals(userChk.getInPassword())){
 				
@@ -167,7 +171,7 @@ public class UsedBaronController {
 	
 				mv.addObject("userId", strUserId);
 
-				strMainUrl = "usedbaron/map";
+				strMainUrl = "usedbaron/main";
 				
 			} else {//app 상요자 정보가 없는경우
 	

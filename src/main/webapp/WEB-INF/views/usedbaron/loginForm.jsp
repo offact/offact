@@ -52,8 +52,8 @@
 		    });  
 	      
 	      var frm=document.loginForm;
-	      frm.id.value='system';
-	      frm.pwd.value='doeltm@0407';
+	      frm.id.value='usedbaron@offact.com';
+	      frm.pwd.value='1';
 
 	      goLogin();
 	      
@@ -103,8 +103,8 @@
       <h2>offact login</h2>
       <form  id="loginForm" name="loginForm"  role="form" action="<%= request.getContextPath() %>/usedbaron/login">
         <div class="form-group">
-          <label for="email">Id:</label>
-          <input type="id" class="form-control" id="id" name="id" placeholder="Enter id">
+          <label for="email">email:</label>
+          <input type="id" class="form-control" id="id" name="id" placeholder="Enter email:usedbaron@offact.com">
         </div>
         <div class="form-group">
           <label for="pwd">Password:</label>
